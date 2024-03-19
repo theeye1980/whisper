@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+.idea/
+*.txt
+*.zip
+*.jpg
+*.png
+*.mp3
+turn.db
+turn.db.sql
+config.json
+
