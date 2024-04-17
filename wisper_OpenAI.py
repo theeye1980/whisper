@@ -4,9 +4,9 @@
 from classes.OpenAIClient import OpenAIClient
 import os
 
-output_folder = "split_files_600"
+output_folder = "Zal_Soveta"
 parts_time=600
-log_file = "test_big_600.txt"
+log_file = "Zal_Soveta_1.txt"
 
 
 

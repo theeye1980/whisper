@@ -20,6 +20,7 @@ class OpenAIClient:
         return self.transcription_result
 
     def segments_text(self,start_time):
+        new_timeline_need = True
         for segment in self.transcription_result.model_extra['segments']:
             start = segment['start'] + start_time
 
@@ -34,10 +35,29 @@ class OpenAIClient:
 
             text = segment['text']
             print('Start:', start_str, 'Text:', text)
-            out = start_str + '::' + text
+            if new_timeline_need:
+                out = start_str + '::' + text
+            else:
+                out=text
+
             self.save_string_to_file(self.log_file, out)
+
+            # Проверем, нужно ли в следующий раз указывать тайминг при записи
+            new_timeline_need = self.check_string(text)
+
             start_str = ''
             text = ''
+
+
+    def check_string(self, input_string):
+        # Trim leading and trailing spaces
+        trimmed_string = input_string.strip()
+
+        # Check if the last character is a dot
+        if trimmed_string.endswith('.'):
+            return True
+        else:
+            return False
 
     def save_string_to_file(self, file_path, input_string):
         current_datetime = datetime.datetime.now()
