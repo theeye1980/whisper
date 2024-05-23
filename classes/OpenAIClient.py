@@ -1,12 +1,13 @@
 from openai import OpenAI
 import datetime
 class OpenAIClient:
-    def __init__(self, log_file):
+    def __init__(self, log_file,log_file_all):
         self.client = OpenAI(
 
                 )
         self.transcription_result = None
         self.log_file = log_file
+        self.log_file_all = log_file_all
         self.audio_file_path = None
 
     def transcribe_audio(self, audio_file_path):
@@ -19,8 +20,11 @@ class OpenAIClient:
         )
         return self.transcription_result
 
-    def segments_text(self,start_time):
+    def segments_text(self,start_time,segments):
         new_timeline_need = True
+        segment_count=segments
+        all_text = '' # Задаем переменную для альтернативного текста
+
         for segment in self.transcription_result.model_extra['segments']:
             start = segment['start'] + start_time
 
@@ -35,19 +39,22 @@ class OpenAIClient:
 
             text = segment['text']
             print('Start:', start_str, 'Text:', text)
-            if new_timeline_need:
-                out = start_str + '::' + text
+            if segment_count > segments - 1:
+                out = '\n' + start_str + '::' + text
+                segment_count=0
             else:
                 out=text
 
             self.save_string_to_file(self.log_file, out)
+            all_text = all_text + " " + out
 
             # Проверем, нужно ли в следующий раз указывать тайминг при записи
             new_timeline_need = self.check_string(text)
 
             start_str = ''
             text = ''
-
+            segment_count=segment_count+1
+        self.save_string_to_file(self.log_file_all, all_text)
 
     def check_string(self, input_string):
         # Trim leading and trailing spaces

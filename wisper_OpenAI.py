@@ -4,9 +4,12 @@
 from classes.OpenAIClient import OpenAIClient
 import os
 
-output_folder = "Zal_Soveta"
+output_folder = "Al_test"
 parts_time=600
-log_file = "Zal_Soveta_1.txt"
+initial_time = 0
+log_file = "altshuler_test.txt"
+log_file_all = "altshuler_test1.txt"
+segments = 8
 
 
 
@@ -23,15 +26,15 @@ for file_name in os.listdir(output_folder):
 file_list.sort(key=lambda x: int(x.split("_part")[1].split(".")[0]))
 
 
-whisper = OpenAIClient(log_file)
+whisper = OpenAIClient(log_file,log_file_all)
 
 # Now file_list contains the names of all files sorted by part number
 i=0
 for file_name in file_list:
     print(file_name)
-    start_time=i*parts_time
+    start_time=i*parts_time + initial_time
     whisper.transcribe_audio(f"{output_folder}/{file_name}")
-    whisper.segments_text(start_time)
+    whisper.segments_text(start_time,segments)
     i=i+1
 
 
