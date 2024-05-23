@@ -1,8 +1,8 @@
 from pydub import AudioSegment
 import os
 
-AudioFilePath = "альтшулер_все.mp3"
-output_folder = "altshuler"
+AudioFilePath = "2.mp3"
+output_folder = "brazil"
 parts_time=600
 
 def split_mp3(file_name, max_length, output_folder):

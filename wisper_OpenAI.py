@@ -4,13 +4,12 @@
 from classes.OpenAIClient import OpenAIClient
 import os
 
-output_folder = "Al_test"
+output_folder = "brazil" #Папка, в которой лежат исходные расклеенные mp3 файлы
 parts_time=600
 initial_time = 0
-log_file = "altshuler_test.txt"
-log_file_all = "altshuler_test1.txt"
+log_file = "brazil.txt" # Имя файлика с результатом с переносами строк
+log_file_all = "brazil_2.txt"    #Имя файлика с результатами без переноса строк
 segments = 8
-
 
 
 #Считываем все расклеенные файлики
