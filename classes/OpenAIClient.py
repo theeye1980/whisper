@@ -43,7 +43,7 @@ class OpenAIClient:
 
 
             if segment_count > segments - 1:
-                out = '\n' + start_str + '::' + text
+                out = '\n' + start_str + ': ' + text
                 segment_count=0
             else:
                 out=text
@@ -51,10 +51,10 @@ class OpenAIClient:
             if segment_count > segments - 4 and segment_count > 3:
                 if new_timeline_need:
                     print('hi')
-                    out = '\n' + start_str + '::' + text
+                    out = '\n' + start_str + ': ' + text
                     segment_count = 0
 
-            self.save_string_to_file(self.log_file, out)
+            # self.save_string_to_file(self.log_file, out)
             all_text = all_text + " " + out
 
             # Проверем, нужно ли в следующий раз указывать тайминг при записи

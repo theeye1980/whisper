@@ -4,11 +4,11 @@
 from classes.OpenAIClient import OpenAIClient
 import os
 
-output_folder = "05.22_7_4floor_14.00(02.58)" #Папка, в которой лежат исходные расклеенные mp3 файлы
+output_folder = "05.24_1_Zom3_11.00(02.15)" #Папка, в которой лежат исходные расклеенные mp3 файлы
 parts_time=600
 initial_time = 0
-log_file = "05.22_7_4floor_14.00(02.58).txt" # Имя файлика с результатом с переносами строк
-log_file_all = "05.22_7_4floor_14.00(02.58)_2.txt"    #Имя файлика с результатами без переноса строк
+log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
+log_file_all = output_folder + "_2.txt"    #Имя файлика с результатами без переноса строк
 segments = 12
 
 #Считываем все расклеенные файлики
@@ -22,7 +22,6 @@ for file_name in os.listdir(output_folder):
 
 # Sort the file list based on the part number in the file name
 file_list.sort(key=lambda x: int(x.split("_part")[1].split(".")[0]))
-
 
 whisper = OpenAIClient(log_file,log_file_all)
 
