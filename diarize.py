@@ -48,7 +48,7 @@ for file_name in file_list:
         print(f"Временная метка {turn.start}, спикер {speaker}")
         real_time = start_time + turn.start
 
-        db.insert_speaker_data(1,speaker,real_time)
+        db.insert_speaker_data(output_folder,speaker,real_time)
 
         # Print the result to the console
         print(result)

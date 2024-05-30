@@ -22,7 +22,7 @@ class OpenAIClient:
         )
         return self.transcription_result
 
-    def segments_text(self,start_time,segments):
+    def segments_text(self,start_time,segments, audiofolders):
         new_timeline_need = True
         segment_count=segments
         all_text = '' # Задаем переменную для альтернативного текста
@@ -63,7 +63,7 @@ class OpenAIClient:
             new_timeline_need = self.check_string(text)
 
             # запишем сегмент в БД
-            db.insert_text_autotrans_data(1, text, st)
+            db.insert_text_autotrans_data(audiofolders, text, st)
 
             # Обнулим на следующий проход
             start_str = ''
