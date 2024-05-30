@@ -1,5 +1,6 @@
 from pyannote.audio import Pipeline
 from classes.bd import bdSQLite
+from classes.config import DIA
 import os
 
 # задаем папку, по которой нужно определить смену спикеров
@@ -10,7 +11,7 @@ initial_time = 0
 
 pipeline = Pipeline.from_pretrained(
     "pyannote/speaker-diarization-3.1",
-    use_auth_token="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")
+    use_auth_token=DIA)
 
 # send pipeline to GPU (when available)
 import torch

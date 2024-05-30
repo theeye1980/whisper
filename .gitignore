@@ -10,5 +10,4 @@ turn.db
 turn.db.sql
 config.json
 *config.py
-*.db
-*.xlsx
+
