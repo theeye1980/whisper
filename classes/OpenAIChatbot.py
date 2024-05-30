@@ -56,30 +56,3 @@ class OpenAIChatbot:
         # close connection
         conn.close()
         return entries
-    def insert_request(self, ask, answer):
-        # connect to SQLite database
-        conn = sqlite3.connect('requests.db')
-
-        # check if table exists
-        cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='log'")
-        table_exists = cursor.fetchone() is not None
-
-        # create table if it doesn't exist
-        if not table_exists:
-            cursor.execute('''CREATE TABLE log
-                              (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                               timestamp DATETIME,
-                               ask TEXT,
-                               answer TEXT)''')
-            conn.commit()
-            print("Table created successfully")
-
-        timestamp = datetime.datetime.now()
-        # insert request into table
-        cursor.execute("INSERT INTO log (timestamp, ask, answer) VALUES (?, ?, ?)", (timestamp, ask, answer))
-        conn.commit()
-        print("Request inserted successfully")
-
-        # close connection
-        conn.close()

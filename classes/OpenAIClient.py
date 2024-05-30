@@ -1,5 +1,7 @@
 from openai import OpenAI
 import datetime
+from classes.bd import bdSQLite
+
 class OpenAIClient:
     def __init__(self, log_file,log_file_all):
         self.client = OpenAI(
@@ -24,10 +26,10 @@ class OpenAIClient:
         new_timeline_need = True
         segment_count=segments
         all_text = '' # Задаем переменную для альтернативного текста
-
+        db = bdSQLite()
         for segment in self.transcription_result.model_extra['segments']:
             start = segment['start'] + start_time
-
+            st = start
             start = round(start)
 
             hours = int(start // 3600)
@@ -60,8 +62,13 @@ class OpenAIClient:
             # Проверем, нужно ли в следующий раз указывать тайминг при записи
             new_timeline_need = self.check_string(text)
 
+            # запишем сегмент в БД
+            db.insert_text_autotrans_data(1, text, st)
+
+            # Обнулим на следующий проход
             start_str = ''
             text = ''
+
             segment_count=segment_count+1
         self.save_string_to_file(self.log_file_all, all_text)
 
@@ -86,5 +93,4 @@ class OpenAIClient:
                 # Handle the exception (e.g., print an error message)
                 print("UnicodeEncodeError occurred: {}".format(e))
                 # Additional error handling code can be added here
-
 

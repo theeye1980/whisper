@@ -4,7 +4,7 @@
 from classes.OpenAIClient import OpenAIClient
 import os
 
-output_folder = "05.24_1_Zom3_11.00(02.15)" #Папка, в которой лежат исходные расклеенные mp3 файлы
+output_folder = "05.22_7_4floor_14.00(02.58)" #Папка, в которой лежат исходные расклеенные mp3 файлы
 parts_time=600
 initial_time = 0
 log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
