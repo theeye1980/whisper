@@ -42,8 +42,6 @@ class OpenAIClient:
             text = segment['text']
             print('Start:', start_str, 'Text:', text)
 
-
-
             if segment_count > segments - 1:
                 out = '\n' + start_str + ': ' + text
                 segment_count=0
