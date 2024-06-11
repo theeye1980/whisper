@@ -63,7 +63,7 @@ class OpenAIClient:
             new_timeline_need = self.check_string(text)
 
             # запишем сегмент в БД
-            db.insert_text_autotrans_data(audiofolders, text, st)
+            #db.insert_text_autotrans_data(audiofolders, text, st)
 
             # Обнулим на следующий проход
             start_str = ''
