@@ -3,8 +3,8 @@ from classes.OpenAIChatbot import OpenAIChatbot
 import json
 
 # Example usage
-file_path = "для правки_пример.txt" # входной файл
-file_out = "для правки_пример1.txt" # выходной файл
+file_path = "06.07_3_5floor_11.30(04.43)_3.txt" # входной файл
+file_out = "06.07_3_5floor_11.30(04.43)_corrected.txt" # выходной файл
 text_reader = TextFileReader(file_path)
 
 # получаем чанки файла

@@ -1,7 +1,7 @@
 from pydub import AudioSegment
 import os
 
-AudioFilePath = "05.24_1_Zom3_11.00(02.15).mp3"
+AudioFilePath = "05.30_6_vzd_11.00(01.36).mp3"
 output_folder = AudioFilePath[:-4]
 parts_time=600
 
