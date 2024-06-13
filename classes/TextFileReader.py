@@ -1,4 +1,5 @@
 import datetime
+import os
 class TextFileReader:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -51,3 +52,20 @@ class TextFileReader:
             return True
         else:
             return False
+    def sort_files_in_folder(self,output_folder, extention = ".mp3"):
+        print ("Привет")
+        file_list = []
+        # Iterate over all files in the folder
+        for file_name in os.listdir(output_folder):
+            if file_name.endswith(extention):
+                file_list.append(file_name)
+
+        # Sort the file list based on the part number in the file name
+        file_list.sort(key=lambda x: int(x.split("_part")[1].split(".")[0]))
+        return file_list
+
+    def count_characters(self,content):
+        dot_count = content.count('.')
+        comma_count = content.count(',')
+        uppercase_count = sum(1 for c in content if c.isupper())
+        return dot_count, comma_count, uppercase_count

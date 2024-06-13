@@ -2,9 +2,10 @@
 # 2. Транскрибируем каждую часть и записываем все части в единый текстовый журнал для обработки.
 import threading
 from classes.OpenAIClient import OpenAIClient
+from classes.TextFileReader import TextFileReader
 import os
 
-output_folder = "test" #Папка, в которой лежат исходные расклеенные mp3 файлы
+output_folder = "06.11_2_Zom3_10.00(02.59)" #Папка, в которой лежат исходные расклеенные mp3 файлы
 parts_time=600
 initial_time = 0
 log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
@@ -12,7 +13,7 @@ log_file_all = output_folder + "_2.txt"    #Имя файлика с резул�
 segments = 12
 
 # Semaphore to limit the number of concurrent threads
-max_threads = 10
+max_threads = 30
 thread_semaphore = threading.BoundedSemaphore(value=max_threads)
 
 def process_file(file_name, start_time, whisper, output_folder):
@@ -22,15 +23,9 @@ def process_file(file_name, start_time, whisper, output_folder):
 #Считываем все расклеенные файлики
 #Перебираем каждый файлик от начала и до конца и отправляем каждый из них на транскрибацию и записываем результат
 
-file_list = []
-# Iterate over all files in the folder
-for file_name in os.listdir(output_folder):
-    if file_name.endswith(".mp3"):
-        file_list.append(file_name)
+txt = TextFileReader("")
 
-# Sort the file list based on the part number in the file name
-file_list.sort(key=lambda x: int(x.split("_part")[1].split(".")[0]))
-
+file_list = txt.sort_files_in_folder(output_folder, ".mp3")
 
 # Now file_list contains the names of all files sorted by part number
 i=0
@@ -56,15 +51,8 @@ for t in threads:
     t.join()
 print("Уходите!")
 
-# Соберем все эти кусочки в единый файл
-file_list = []
-# Iterate over all files in the folder
-for file_name in os.listdir(output_folder):
-    if file_name.endswith(".txt"):
-        file_list.append(file_name)
-
-# Sort the file list based on the part number in the file name
-file_list.sort(key=lambda x: int(x.split("_part")[1].split(".")[0]))
+# Соберем все кусочки текстовых файлов в единый файл
+file_list = txt.sort_files_in_folder(output_folder, ".txt")
 
 with open(log_file, "w") as output_file:
     for file_name in file_list:
@@ -79,15 +67,15 @@ with open(log_file, "w") as output_file:
             content = input_file.read()
 
             # Count dots, commas, and uppercase letters
-            dot_count += content.count('.')
-            comma_count += content.count(',')
-            uppercase_count += sum(1 for c in content if c.isupper())
+
+            # dot_count += content.count('.')
+            # comma_count += content.count(',')
+            # uppercase_count += sum(1 for c in content if c.isupper())
+            dot_count, comma_count, uppercase_count = txt.count_characters(content)
 
             # Write the content to the output file
             output_file.write(content)
 
         # Output the statistics
-        print(f"Статистика по файлам{file_name}")
-        print("Dot count:", dot_count)
-        print("Comma count:", comma_count)
-        print("Uppercase letter count:", uppercase_count)
+        print(f"Статистика по файлу {file_name}: Точек: {dot_count}, Запятых: {comma_count}, Заглавных букв: {uppercase_count}")
+
