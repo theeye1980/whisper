@@ -5,69 +5,40 @@
 	{% include 'chunks/header.html' %}
 </head>
 <body class="mb-5">
-	<div class="container">
+
+	<div class="container" >
 		<div class="row">
-			<div class="col">
-				<h3 class="my-3 mt-md-5 fs-5 fw-semibold text-secondary-emphasis">
-					Поиск по приложенной фотографии
-				</h3>
-			</div>
-		</div>
-	</div>
-	{% include 'chunks/menu.html' %}
-	<div class="container">
-		<div class="row">
-			<div class="col col-lg-8">
-				<form method="POST" class="my-4 p-4 border rounded-4 bg-body" enctype="multipart/form-data">
-					{% include 'chunks/input_form.html' %}
-					{% include 'chunks/search_form.html' %}
-					<button type="submit" class="btn btn-primary">Отправить</button>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div class="container" style="display:{{ displayalert }}">
-		<div class="row">
-			<div class="col col-lg-8">
-				<div class="alert alert-danger rounded-4" role="alert">
-					{{ msg }}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container" style="display:{{ display }}">
-		<div class="row">
-			<div class="col-12">
-				<h3 class="my-4 fs-4 fw-semibold text-secondary-emphasis">Похожие</h3>
-			</div>
-			<div class="col-12 col-sm-8 col-md-6 col-lg-4 col-xl-3">
-				<img src="static/temp/{{ file_name}}" class="mw-100 mh-100 p-4 mb-5 border rounded-4">
-			</div>
+
 			<div class="col-12">
 				<div class="table-responsive">
 					<table class="table align-middle overflow-hidden rounded-4">
 						<thead>
 							<tr>
-								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">Картинка</th>
-								<th class="bg-body-tertiary" scope="col" style="vertical-align: middle;">Артикул / Бренд</th>
-								<th class="bg-body-tertiary" scope="col" style="vertical-align: middle;">Цена / Распродажа</th>
+								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">Проект</th>
+								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">MP3</th>
+								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">TXT</th>
+								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">Проблемы</th>
+
 
 
 							</tr>
 						</thead>
 						<tbody>
-							{% for item in ex %}
+							{% for project, mp3_length, txt in combined_list %}
 								<tr>
 									<td>
-										<a href="https://fandeco.ru/{{ item[7] }}">
-											<img src="{{ item[1] }}"
-												alt="Image {{ item[2] }}" class="rounded-3"
-												style="max-width: 150px; max-height: 150px;">
-										</a>
+										{{ project }}
 									</td>
-									<td>{{ item[7] }} <br> {{ item[2] }} <br> {{ item[6] }}<br> <b>{{ item[8] }}</b></td>
-									<td>{{ item[3] }} р.<br> {{ item[4] }} р.<br> {{ item[5] }}</td>
+									<td>
+										{{ mp3_length }}
+									</td>
 
+									<td>
+										{{ txt }}
+									</td>
+									<td>
+
+									</td>
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -80,6 +51,6 @@
 			</div>
 		</div>
 
-	{% include 'chunks/footer.html' %}
+	</div>
 </body>
 </html>

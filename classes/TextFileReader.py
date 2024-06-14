@@ -69,3 +69,10 @@ class TextFileReader:
         comma_count = content.count(',')
         uppercase_count = sum(1 for c in content if c.isupper())
         return dot_count, comma_count, uppercase_count
+
+    def scan_folders(self, path):
+
+        folders = [folder for folder in os.listdir(path) if os.path.isdir(os.path.join(path, folder))]
+        sorted_folders = sorted(folders)
+        filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "templates", ".git", ".idea", '__pycache__']]
+        return filtered_folders
