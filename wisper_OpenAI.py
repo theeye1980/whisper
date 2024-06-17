@@ -66,11 +66,6 @@ with open(log_file, "w") as output_file:
         with open(file_path, "r") as input_file:
             content = input_file.read()
 
-            # Count dots, commas, and uppercase letters
-
-            # dot_count += content.count('.')
-            # comma_count += content.count(',')
-            # uppercase_count += sum(1 for c in content if c.isupper())
             dot_count, comma_count, uppercase_count = txt.count_characters(content)
 
             # Write the content to the output file

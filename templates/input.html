@@ -24,7 +24,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% for project, mp3_length, txt in combined_list %}
+
+						{% for project, mp3_length, txt, problems in combined_list %}
 								<tr>
 									<td>
 										{{ project }}
@@ -37,8 +38,39 @@
 										{{ txt }}
 									</td>
 									<td>
+										{{ problems }}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+
+
+
+
+				</div>
+				<div class="table-responsive">
+					<table class="table align-middle overflow-hidden rounded-4">
+						<thead>
+							<tr>
+								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">Проблемный файл</th>
+								<th class="bg-body-tertiary p-2 p-lg-3" scope="col" style="vertical-align: middle;">Действия</th>
+
+
+
+							</tr>
+						</thead>
+						<tbody>
+							{% for problem_file in problem_files %}
+								<tr>
+									<td>
+										{{ problem_file }}
+									</td>
+									<td>
 
 									</td>
+
+
 								</tr>
 							{% endfor %}
 						</tbody>

@@ -53,7 +53,6 @@ class TextFileReader:
         else:
             return False
     def sort_files_in_folder(self,output_folder, extention = ".mp3"):
-        print ("Привет")
         file_list = []
         # Iterate over all files in the folder
         for file_name in os.listdir(output_folder):

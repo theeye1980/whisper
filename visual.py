@@ -8,6 +8,7 @@ txt = TextFileReader("")
 projects = txt.scan_folders(".")
 
 problems = []
+problem_files = []
 mp3 = []  # List to store lists of MP3 files for each project
 txtc = []
 i = 0  # Initialize the index variable
@@ -22,7 +23,7 @@ for project in projects:
     #посчитаем число проблем и выделим файлы с проблемами
 
     isProblem = False
-
+    problem_count=0
     for txtfile in txtfiles:
         file_path = os.path.join(project, txtfile)
         isProblem = False
@@ -32,12 +33,14 @@ for project in projects:
 
         if dot_count < 10 or comma_count < 10 or uppercase_count < 10:
             isProblem = True
+            problem_files.append(txtfile)
+            problem_count+=1
 
         print(f"{dot_count}, {comma_count}, {uppercase_count} - {isProblem}")
-
+    problems.append(problem_count)
     i += 1
 
-combined_list = zip(projects, mp3, txtc)
+combined_list = zip(projects, mp3, txtc, problems)
 # считаем число текстовых фалов
 
 # определяем файлы с проблемами
@@ -49,6 +52,6 @@ def home():
 
 
 
-    return render_template(template, display='none', displayalert='none', combined_list=combined_list, data = mp3)
+    return render_template(template, display='none', displayalert='none', combined_list=combined_list, problem_files = problem_files)
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5002)
