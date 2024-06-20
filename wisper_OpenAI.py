@@ -5,7 +5,7 @@ from classes.OpenAIClient import OpenAIClient
 from classes.TextFileReader import TextFileReader
 import os
 
-output_folder = "06.11_2_Zom3_10.00(02.59)" #Папка, в которой лежат исходные расклеенные mp3 файлы
+output_folder = "06.19_5_Zom3_15.00(02.34)" #Папка, в которой лежат исходные расклеенные mp3 файлы
 parts_time=600
 initial_time = 0
 log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
@@ -13,7 +13,7 @@ log_file_all = output_folder + "_2.txt"    #Имя файлика с резул�
 segments = 12
 
 # Semaphore to limit the number of concurrent threads
-max_threads = 30
+max_threads = 50
 thread_semaphore = threading.BoundedSemaphore(value=max_threads)
 
 def process_file(file_name, start_time, whisper, output_folder):

@@ -75,3 +75,10 @@ class TextFileReader:
         sorted_folders = sorted(folders)
         filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "templates", ".git", ".idea", '__pycache__']]
         return filtered_folders
+    def copy_file(self, input, output):
+        with open(input, 'r') as file:
+            content = file.read()
+
+        # Write the content to the copy file
+        with open(output, 'w') as file:
+            file.write(content)
