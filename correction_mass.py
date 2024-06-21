@@ -9,8 +9,6 @@ import os
 txt = TextFileReader("")
 projects = txt.scan_folders(".")
 
-projects = txt.scan_folders(".")
-
 problem_paths = []
 problem_files = []
 
