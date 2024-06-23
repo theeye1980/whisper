@@ -39,7 +39,7 @@ class bdSQLite:
         cursor = conn.cursor()
 
         # Insert data into the speakers table
-        cursor.execute("INSERT INTO speakers (audiofolders_id, speaker, start_time) VALUES (?, ?, ?)",
+        cursor.execute("INSERT INTO speakers (audiofolders, speaker, start_time) VALUES (?, ?, ?)",
                        (audiofolders_id, speaker, start_time))
 
         # Commit the changes and close the connection

@@ -4,7 +4,7 @@ from classes.config import DIA
 import os
 
 # задаем папку, по которой нужно определить смену спикеров
-output_folder = "05.22_7_4floor_14.00(02.58)"
+output_folder = "06.19_1_Zal_Soveta_13.00(01.47)"
 parts_time=600
 initial_time = 0
 
@@ -17,7 +17,7 @@ pipeline = Pipeline.from_pretrained(
 import torch
 print(torch.cuda.is_available())
 
-pipeline.to(torch.device("cuda"))
+# pipeline.to(torch.device("cuda"))
 
 #Считываем все расклеенные файлики
 #Перебираем каждый файлик от начала и до конца и отправляем каждый из них на транскрибацию и записываем результат
