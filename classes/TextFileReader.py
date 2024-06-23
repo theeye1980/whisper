@@ -1,5 +1,6 @@
 import datetime
 import os
+from typing import List
 class TextFileReader:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -82,7 +83,36 @@ class TextFileReader:
         # Write the content to the copy file
         with open(output, 'w') as file:
             file.write(content)
+    def problems_find(self, projects) -> List[str]:
+        """
+        Finds problematic files in the specified projects.
 
+        Args:
+        - projects (list): A list of project paths.
+
+        Returns:
+        - list of str: A list of paths to files identified as problematic.
+        """
+        problem_files = []
+        for project in projects:
+            txtfiles = self.sort_files_in_folder(project, ".txt")
+
+            # посчитаем число проблем и выделим файлы с проблемами
+            problem_count = 0
+            for txtfile in txtfiles:
+                file_path = os.path.join(project, txtfile)
+                isProblem = False
+                with open(file_path, "r") as input_file:
+                    content = input_file.read()
+                    dot_count, comma_count, uppercase_count = self.count_characters(content)
+
+                if dot_count < 10 or comma_count < 10 or uppercase_count < 10:
+                    isProblem = True
+                    problem_count += 1
+                    print(f"{txtfile}: {dot_count}, {comma_count}, {uppercase_count}")
+                    path = f"{project}/{txtfile}"
+                    problem_files.append(path)
+        return  problem_files
     @staticmethod
     def assemble(file_list, output_folder, log_file):
         txt = TextFileReader("")

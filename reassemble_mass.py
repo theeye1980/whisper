@@ -1,11 +1,5 @@
-from classes.OpenAIClient import OpenAIClient
+# запускает пересборку текстовых файлов в один со всех проектов
 from classes.TextFileReader import TextFileReader
-import os
-
-# запускает автоматический сбор и коррекцию всех проблемных файлов
-from classes.TextFileReader import TextFileReader
-from classes.OpenAIChatbot import OpenAIChatbot
-import json
 import os
 
 # Собираем информацию о проблемных файлах
@@ -36,4 +30,4 @@ for project in projects:
 
             # Output the statistics
             print(
-                f"Статистика по файлу {file_name}: Точек: {dot_count}, Запятых: {comma_count}, Заглавных букв: {uppercase_count}")
+                f"Summary {file_name}: dots: {dot_count}, commas: {comma_count}, Inline: {uppercase_count}")
