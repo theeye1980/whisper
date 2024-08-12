@@ -22,17 +22,6 @@ class TextFileReader:
 
         return self.text_chunks
 
-    def save_string_to_file(self, file_path, input_string):
-        with open(file_path, 'a') as file:
-            # file.write('\nDate and Time: {}\n'.format(current_datetime))
-            try:
-                # Your code that might raise UnicodeEncodeError
-                file.write(input_string)
-            except UnicodeEncodeError as e:
-                # Handle the exception (e.g., print an error message)
-                print("UnicodeEncodeError occurred: {}".format(e))
-                # Additional error handling code can be added here
-
     def ts_format(self, start):
         start = round(start)
 

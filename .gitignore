@@ -6,6 +6,7 @@ __pycache__/
 *.jpg
 *.png
 *.mp3
+.env
 turn.db
 turn.db.sql
 config.json
