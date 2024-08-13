@@ -9,7 +9,7 @@ import datetime
 from classes.bd import bdSQLite
 
 class YandexSpeechkitClient:
-    def __init__(self, log_file):
+    def __init__(self, log_file,log_file_all):
         load_dotenv()
         config = {
             "YANDEX_API_KEY": os.getenv("YANDEX_API_KEY")
@@ -26,13 +26,14 @@ class YandexSpeechkitClient:
         self.model.audio_processing_type = AudioProcessingType.Full
         self.transcription_result = None
         self.log_file = log_file
+        self.log_file_all = log_file_all
         self.audio_file_path = None
 
     def transcribe_audio(self, audio_file_path):
         self.transcription_result = self.model.transcribe_file(audio_file_path)
         return self.transcription_result
 
-    def segments_text(self,start_time):
+    def segments_text(self,start_time, output_folder):
 
         all_text = '' # Задаем переменную для альтернативного текста
         db = bdSQLite()
@@ -61,7 +62,7 @@ class YandexSpeechkitClient:
                 text = ''
 
 
-        self.save_string_to_file("out.txt", all_text)
+        self.save_string_to_file(self.log_file_all, all_text)
 
     def check_string(self, input_string):
         # Trim leading and trailing spaces
