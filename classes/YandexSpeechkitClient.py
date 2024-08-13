@@ -3,6 +3,7 @@ from speechkit import model_repository
 from speechkit.stt import AudioProcessingType
 from dotenv import load_dotenv
 import os
+import math
 
 import datetime
 from classes.bd import bdSQLite
@@ -39,7 +40,7 @@ class YandexSpeechkitClient:
             for seg in segment.utterances:
 
                 print("stop")
-                start = segment['start_time_ms'] + start_time
+                start = math.ceil(seg.start_time_ms / 1000) + start_time
                 st = start
                 start = round(start)
 
@@ -50,7 +51,7 @@ class YandexSpeechkitClient:
                 time_format = "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
                 start_str = str(time_format)
 
-                text = segment['text']
+                text = seg.normalized_text
 
                 out = '\n' + start_str + ': ' + text
                 all_text = all_text + " " + out
@@ -59,7 +60,7 @@ class YandexSpeechkitClient:
                 start_str = ''
                 text = ''
 
-                segment_count=segment_count+1
+
         self.save_string_to_file("out.txt", all_text)
 
     def check_string(self, input_string):
