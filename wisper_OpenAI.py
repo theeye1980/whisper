@@ -20,10 +20,15 @@ def process_file(file_name, start_time, whisper, output_folder):
     whisper.transcribe_audio(f"{output_folder}/{file_name}")
     whisper.segments_text(start_time, segments, output_folder)
 
-#Считываем все расклеенные файлики
-#Перебираем каждый файлик от начала и до конца и отправляем каждый из них на транскрибацию и записываем результат
+
+# Собираем информацию о проектах
 
 txt = TextFileReader("")
+projects = txt.scan_folders(".")
+
+
+#Считываем все расклеенные файлики
+#Перебираем каждый файлик от начала и до конца и отправляем каждый из них на транскрибацию и записываем результат
 
 file_list = txt.sort_files_in_folder(output_folder, ".mp3")
 
