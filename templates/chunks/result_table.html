@@ -1,0 +1,16 @@
+                    {% for item in ex %}
+					  <div class="col">
+						<div class="card">
+						  <img src="{{ item[1] }}" class="card-img-top" style="max-width: 200px; max-height: 200px; display: block; margin: 0 auto;" alt="...">
+
+						  <div class="card-body">
+							 <h5 class="card-title"><!--{{ item[2] }}--></h5>
+							<!--<p class="card-text">{{ item[6] }} <br>{{ item[3] }} р. / {{ item[4] }} р.  <br> {{ item[5] }} </p> -->
+						  </div>
+					      <div class="card-footer">
+							  <small class="text-body-secondary">{{ item[7] }}<br> {{ item[8] }} <br> <span class="text-success">{{ item[6] }}</span><br> {{ item[3] }} р.<br> {{ item[4] }} р.<br> {{ item[5] }}</small>
+						  </div>
+						</div>
+					  </div>
+
+					{% endfor %}

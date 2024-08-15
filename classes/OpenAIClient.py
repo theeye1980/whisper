@@ -1,12 +1,15 @@
 from openai import OpenAI
 import datetime
+from classes.bd import bdSQLite
+
 class OpenAIClient:
-    def __init__(self, log_file):
+    def __init__(self, log_file,log_file_all):
         self.client = OpenAI(
 
                 )
         self.transcription_result = None
         self.log_file = log_file
+        self.log_file_all = log_file_all
         self.audio_file_path = None
 
     def transcribe_audio(self, audio_file_path):
@@ -19,17 +22,63 @@ class OpenAIClient:
         )
         return self.transcription_result
 
-    def segments_text(self,start_time):
+    def segments_text(self,start_time,segments, audiofolders):
+        new_timeline_need = True
+        segment_count=segments
+        all_text = '' # Задаем переменную для альтернативного текста
+        db = bdSQLite()
         for segment in self.transcription_result.model_extra['segments']:
             start = segment['start'] + start_time
+            st = start
             start = round(start)
-            start_str = str(start)
+
+            hours = int(start // 3600)
+            minutes = int((start % 3600) // 60)
+            seconds = int(start % 60)
+
+            time_format = "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
+            start_str = str(time_format)
+
             text = segment['text']
-            print('Start:', start, 'Text:', text)
-            out = start_str + '::' + text
-            self.save_string_to_file(self.log_file, out)
+            print('Start:', start_str, 'Text:', text)
+
+            if segment_count > segments - 1:
+                out = '\n' + start_str + ': ' + text
+                segment_count=0
+            else:
+                out=text
+
+            if segment_count > segments - 4 and segment_count > 3:
+                if new_timeline_need:
+                    print('hi')
+                    out = '\n' + start_str + ': ' + text
+                    segment_count = 0
+
+            # self.save_string_to_file(self.log_file, out)
+            all_text = all_text + " " + out
+
+            # Проверем, нужно ли в следующий раз указывать тайминг при записи
+            new_timeline_need = self.check_string(text)
+
+            # запишем сегмент в БД
+            #db.insert_text_autotrans_data(audiofolders, text, st)
+
+            # Обнулим на следующий проход
             start_str = ''
             text = ''
+
+            segment_count=segment_count+1
+        self.save_string_to_file(self.log_file_all, all_text)
+
+    def check_string(self, input_string):
+        # Trim leading and trailing spaces
+        trimmed_string = input_string.strip()
+
+        # Check if the last character is a dot
+        if trimmed_string.endswith('.'):
+            return True
+        else:
+            return False
 
     def save_string_to_file(self, file_path, input_string):
         current_datetime = datetime.datetime.now()
@@ -43,7 +92,3 @@ class OpenAIClient:
                 print("UnicodeEncodeError occurred: {}".format(e))
                 # Additional error handling code can be added here
 
-# # Example usage
-# client = OpenAIClient()
-# transcription = client.transcribe_audio("Test_10m.mp3")
-# print(transcription)

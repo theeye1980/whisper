@@ -1,5 +1,6 @@
 venv/
 __pycache__/
+.idea/
 *.txt
 *.zip
 *.jpg
@@ -8,4 +9,10 @@ __pycache__/
 turn.db
 turn.db.sql
 config.json
+.env
+turn.db
+turn.db.sql
+config.json
+*config.py
+
 
