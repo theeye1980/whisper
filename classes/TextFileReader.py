@@ -125,3 +125,14 @@ class TextFileReader:
                 print(
                     f"Статистика по файлу {file_name}: Точек: {dot_count}, Запятых: {comma_count}, Заглавных букв: {uppercase_count}")
 
+    def save_string_to_file(self, file_path, input_string):
+        current_datetime = datetime.datetime.now()
+        with open(file_path, 'a') as file:
+            # file.write('\nDate and Time: {}\n'.format(current_datetime))
+            try:
+                # Your code that might raise UnicodeEncodeError
+                file.write('\n' + input_string)
+            except UnicodeEncodeError as e:
+                # Handle the exception (e.g., print an error message)
+                print("UnicodeEncodeError occurred: {}".format(e))
+                # Additional error handling code can be added here

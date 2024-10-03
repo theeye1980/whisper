@@ -38,6 +38,7 @@ for project in projects:
     i=0
     threads = []
     for file_name in file_list:
+
         part_name=i+1
         out_file_name = f"{output_folder}/{output_folder}_part{part_name}.txt"
         whisper = OpenAIClient(log_file, out_file_name)
@@ -56,6 +57,7 @@ for project in projects:
     # Wait for all threads to complete
     for t in threads:
         t.join()
+        thread_semaphore.release()  # Release semaphore after thread completes
     print("Уходите!")
 
     # Соберем все кусочки текстовых файлов в единый файл
