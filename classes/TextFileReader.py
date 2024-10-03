@@ -12,7 +12,7 @@ class TextFileReader:
         with open(self.file_path, 'r', encoding='cp1251') as file:
             for line in file:
                 line = line.strip()
-                if len(temp_chunk) + len(line) <= 4000:
+                if len(temp_chunk) + len(line) <= 10000:
                     temp_chunk += line + '\r\n'
                 else:
                     self.text_chunks.append(temp_chunk)
