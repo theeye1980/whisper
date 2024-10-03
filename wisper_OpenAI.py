@@ -5,8 +5,8 @@ from classes.OpenAIClient import OpenAIClient
 from classes.TextFileReader import TextFileReader
 import os
 
-output_folder = "06.25_3_Zal_Soveta_14.00(03.34)" #Папка, в которой лежат исходные расклеенные mp3 файлы
-parts_time=600
+output_folder = "repair" #Папка, в которой лежат исходные расклеенные mp3 файлы
+parts_time=4800
 initial_time = 0
 log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
 log_file_all = output_folder + "_2.txt"    #Имя файлика с результатами без переноса строк

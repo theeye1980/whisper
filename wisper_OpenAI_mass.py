@@ -12,8 +12,13 @@ max_threads = 50
 thread_semaphore = threading.BoundedSemaphore(value=max_threads)
 
 def process_file(file_name, start_time, whisper, output_folder):
-    whisper.transcribe_audio(f"{output_folder}/{file_name}")
-    whisper.segments_text(start_time, segments, output_folder)
+    try:
+        whisper.transcribe_audio(f"{output_folder}/{file_name}")
+        whisper.segments_text(start_time, segments, output_folder)
+    except Exception as e:
+        print(f"Error processing {file_name}: {e}")
+    finally:
+        thread_semaphore.release()  # Ensure semaphore is released
 
 
 # Собираем информацию о проектах
@@ -57,7 +62,7 @@ for project in projects:
     # Wait for all threads to complete
     for t in threads:
         t.join()
-        thread_semaphore.release()  # Release semaphore after thread completes
+        
     print("Уходите!")
 
     # Соберем все кусочки текстовых файлов в единый файл
