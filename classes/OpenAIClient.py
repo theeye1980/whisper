@@ -27,8 +27,8 @@ class OpenAIClient:
         segment_count=segments
         all_text = '' # Задаем переменную для альтернативного текста
         db = bdSQLite()
-        for segment in self.transcription_result.model_extra['segments']:
-            start = segment['start'] + start_time
+        for segment in self.transcription_result.segments:
+            start = segment.start + start_time
             st = start
             start = round(start)
 
@@ -39,7 +39,7 @@ class OpenAIClient:
             time_format = "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
             start_str = str(time_format)
 
-            text = segment['text']
+            text = segment.text
             print('Start:', start_str, 'Text:', text)
 
             if segment_count > segments - 1:
@@ -91,4 +91,3 @@ class OpenAIClient:
                 # Handle the exception (e.g., print an error message)
                 print("UnicodeEncodeError occurred: {}".format(e))
                 # Additional error handling code can be added here
-
