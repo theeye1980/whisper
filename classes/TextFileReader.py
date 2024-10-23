@@ -1,6 +1,7 @@
 import datetime
 import os
 from typing import List
+import re
 class TextFileReader:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -11,7 +12,7 @@ class TextFileReader:
         with open(self.file_path, 'r', encoding='cp1251') as file:
             for line in file:
                 line = line.strip()
-                if len(temp_chunk) + len(line) <= 4000:
+                if len(temp_chunk) + len(line) <= 10000:
                     temp_chunk += line + '\r\n'
                 else:
                     self.text_chunks.append(temp_chunk)
@@ -102,6 +103,44 @@ class TextFileReader:
                     path = f"{project}/{txtfile}"
                     problem_files.append(path)
         return  problem_files
+
+    def find_mp3_without_txt(self, folders):
+        missing_txt_files = []
+
+        for folder in folders:
+            # Get the full path of the folder
+            folder_path = os.path.join(os.getcwd(), folder)
+
+            # List all files in the folder
+            files = os.listdir(folder_path)
+
+            # Create sets for mp3 and txt files
+            mp3_files = {file[:-4] for file in files if file.endswith('.mp3')}  # Remove the .mp3 extension
+            txt_files = {file[:-4] for file in files if file.endswith('.txt')}  # Remove the .txt extension
+
+            # Find mp3 files without corresponding txt files
+            for mp3_file in mp3_files:
+                if mp3_file not in txt_files:
+                    missing_txt_files.append(os.path.join(folder, f"{mp3_file}.mp3"))
+
+        # Report results
+        if missing_txt_files:
+            print(f"Found {len(missing_txt_files)} MP3 files without corresponding TXT files:")
+            for mp3 in missing_txt_files:
+                print(mp3)
+            return missing_txt_files
+        else:
+            print("All MP3 files have corresponding TXT files. All is OK.")
+
+    def extract_part_number(self, filename):
+        # Use regex to find the part number in the filename
+        match = re.search(r'_part(\d+)\.txt$', filename)
+        if match:
+            # Extract the number and convert it to an integer
+            part_number = int(match.group(1))
+            return part_number
+        else:
+            raise ValueError("No part number found in the filename.")
     @staticmethod
     def assemble(file_list, output_folder, log_file):
         txt = TextFileReader("")
@@ -125,3 +164,14 @@ class TextFileReader:
                 print(
                     f"Статистика по файлу {file_name}: Точек: {dot_count}, Запятых: {comma_count}, Заглавных букв: {uppercase_count}")
 
+    def save_string_to_file(self, file_path, input_string):
+        current_datetime = datetime.datetime.now()
+        with open(file_path, 'a') as file:
+            # file.write('\nDate and Time: {}\n'.format(current_datetime))
+            try:
+                # Your code that might raise UnicodeEncodeError
+                file.write('\n' + input_string)
+            except UnicodeEncodeError as e:
+                # Handle the exception (e.g., print an error message)
+                print("UnicodeEncodeError occurred: {}".format(e))
+                # Additional error handling code can be added here
