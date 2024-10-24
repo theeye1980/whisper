@@ -17,7 +17,7 @@ def split_mp3(file_path, max_length, output_folder1):
         part.export(f"{output_folder1}/{os.path.splitext(file_name)[0]}_part{i + 1}.mp3", format="mp3")
 
 # Указываем входную папку (полный путь)
-input_folder = r"C:\Users\User\Downloads\2024.10.02"
+input_folder = r"C:\Users\User\Downloads\2024.10.04"
 
 # Получаем аудиофайлы из папки
 file_list = []
