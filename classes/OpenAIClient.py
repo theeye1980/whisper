@@ -29,6 +29,7 @@ class OpenAIClient:
         db = bdSQLite()
         for segment in self.transcription_result.segments:
             start = segment.start + start_time
+            # start = segment['start'] + start_time
             st = start
             start = round(start)
 
@@ -40,6 +41,7 @@ class OpenAIClient:
             start_str = str(time_format)
 
             text = segment.text
+            #text = segment['text']
             print('Start:', start_str, 'Text:', text)
 
             if segment_count > segments - 1:
