@@ -20,25 +20,26 @@ def split_mp3(file_path, max_length, output_folder1):
 
 def process_file(file_named, input_folder):
     if file_named.endswith(".mp3"):
-        AudioFilePath = os.path.join(input_folder, file_named)
-        output_folder = file_named[:-4]  # Create output folder in the same directory
+        audio_file_path = os.path.join(input_folder, file_named)
+        output_folder = os.path.join(input_folder, file_named[:-4])  # Create output folder in the same directory
         parts_time = 600  # Length of each part in seconds
-        split_mp3(AudioFilePath, parts_time, output_folder)
+        split_mp3(audio_file_path, parts_time, output_folder)
 
-# Start timing
-start_time = time.time()
-# Specify the input folder (full path)
-input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_27.11.2024"
+if __name__ == "__main__":
+    # Start timing
+    start_time = time.time()
+    # Specify the input folder (full path)
+    input_folder = r"C:\Users\kosarev\Downloads\Стенограммы_28.11.2024"
 
-# Get audio files from the folder
-file_list = [file_named for file_named in os.listdir(input_folder) if file_named.endswith(".mp3")]
+    # Get audio files from the folder
+    file_list = [file_named for file_named in os.listdir(input_folder) if file_named.endswith(".mp3")]
 
-# Use ProcessPoolExecutor to parallelize the processing
-with ProcessPoolExecutor(max_workers=16) as executor:
-    executor.map(process_file, file_list, [input_folder] * len(file_list))
+    # Use ProcessPoolExecutor to parallelize the processing
+    with ProcessPoolExecutor(max_workers=16) as executor:
+        executor.map(process_file, file_list, [input_folder] * len(file_list))
 
-# End timing
-end_time = time.time()
-# Calculate and print the total time taken
-total_time = end_time - start_time
-print(f"Total time taken: {total_time:.2f} seconds")
+    # End timing
+    end_time = time.time()
+    # Calculate and print the total time taken
+    total_time = end_time - start_time
+    print(f"Total time taken: {total_time:.2f} seconds")
