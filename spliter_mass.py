@@ -1,5 +1,6 @@
 from pydub import AudioSegment
 import os
+import time
 
 def split_mp3(file_path, max_length, output_folder1):
     audio = AudioSegment.from_file(file_path, format="mp3")
@@ -14,22 +15,30 @@ def split_mp3(file_path, max_length, output_folder1):
         start_time = i * max_length * 1000
         end_time = min((i + 1) * max_length * 1000, len(audio))
         part = audio[start_time:end_time]
-        part.export(f"{output_folder1}/{os.path.splitext(file_name)[0]}_part{i + 1}.mp3", format="mp3")
+        part.export(os.path.join(output_folder, f"{os.path.splitext(file_name)[0]}_part{i + 1}.mp3"), format="mp3")
 
+
+
+# Start timing
+start_time = time.time()
 # Указываем входную папку (полный путь)
-input_folder = r"C:\Users\kosarev\Downloads\Стенограммы_29.10.2024"
+input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_27.11.2024"
 
-# Получаем аудиофайлы из папки
+# Get audio files from the folder
 file_list = []
 # Iterate over all files in the folder
 for file_named in os.listdir(input_folder):
     if file_named.endswith(".mp3"):
-        AudioFilePath = input_folder + '\\' + file_named
-        output_folder = file_named[:-4]
-        parts_time = 600
+        AudioFilePath = os.path.join(input_folder, file_named)
+        output_folder = file_named[:-4]  # Create output folder in the same directory
+        parts_time = 600  # Length of each part in seconds
         split_mp3(AudioFilePath, parts_time, output_folder)
 
 
+end_time = time.time()
+# Calculate and print the total time taken
+total_time = end_time - start_time
+print(f"Total time taken: {total_time:.2f} seconds")
 
 
 
