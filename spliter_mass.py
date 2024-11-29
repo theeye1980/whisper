@@ -22,7 +22,7 @@ def split_mp3(file_path, max_length, output_folder1):
 # Start timing
 start_time = time.time()
 # Указываем входную папку (полный путь)
-input_folder = r"C:\Users\kosarev\Downloads\Стенограммы_28.11.2024"
+input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_27.11.2024"
 
 # Get audio files from the folder
 file_list = []

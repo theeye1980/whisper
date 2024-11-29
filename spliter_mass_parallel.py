@@ -21,7 +21,7 @@ def split_mp3(file_path, max_length, output_folder1):
 def process_file(file_named, input_folder):
     if file_named.endswith(".mp3"):
         audio_file_path = os.path.join(input_folder, file_named)
-        output_folder = os.path.join(input_folder, file_named[:-4])  # Create output folder in the same directory
+        output_folder = file_named[:-4]  # Create output folder in the same directory
         parts_time = 600  # Length of each part in seconds
         split_mp3(audio_file_path, parts_time, output_folder)
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # Start timing
     start_time = time.time()
     # Specify the input folder (full path)
-    input_folder = r"C:\Users\kosarev\Downloads\Стенограммы_28.11.2024"
+    input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_27.11.2024"
 
     # Get audio files from the folder
     file_list = [file_named for file_named in os.listdir(input_folder) if file_named.endswith(".mp3")]
