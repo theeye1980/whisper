@@ -13,7 +13,7 @@ thread_semaphore = threading.BoundedSemaphore(value=max_threads)
 
 def process_file(file_name, start_time, whisper, output_folder):
     try:
-        whisper.transcribe_audio(f"{output_folder}/{file_name}")
+        whisper.transcribe_audio(os.path.join(output_folder, file_name))
         whisper.segments_text(start_time, segments, output_folder)
     except Exception as e:
         print(f"Error processing {file_name}: {e}")
@@ -45,7 +45,8 @@ for project in projects:
     for file_name in file_list:
 
         part_name=i+1
-        out_file_name = f"{output_folder}/{output_folder}_part{part_name}.txt"
+        # out_file_name = f"{output_folder}/{output_folder}_part{part_name}.txt"
+        out_file_name = os.path.join(output_folder, f"{output_folder}_part{part_name}.txt")
         whisper = OpenAIClient(log_file, out_file_name)
         print(file_name)
         start_time=i*parts_time + initial_time

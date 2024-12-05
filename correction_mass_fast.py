@@ -55,7 +55,7 @@ for project in projects:
     for txtfile in txtfiles:
         file_path = os.path.join(project, txtfile)
 
-        with open(file_path, "r") as input_file:
+        with open(file_path, "r",encoding='utf-8') as input_file:
             content = input_file.read()
             dot_count, comma_count, uppercase_count = txt.count_characters(content)
 

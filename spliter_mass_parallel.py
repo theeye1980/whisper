@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # Start timing
     start_time = time.time()
     # Specify the input folder (full path)
-    input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_27.11.2024"
+    input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_04.12.2024"
 
     # Get audio files from the folder
     file_list = [file_named for file_named in os.listdir(input_folder) if file_named.endswith(".mp3")]

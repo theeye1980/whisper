@@ -9,7 +9,7 @@ class TextFileReader:
 
     def read_file_and_split_chunks(self):
         temp_chunk = ""
-        with open(self.file_path, 'r', encoding='cp1251') as file:
+        with open(self.file_path, 'r', encoding='utf-8') as file:
             for line in file:
                 line = line.strip()
                 if len(temp_chunk) + len(line) <= 10000:
@@ -166,7 +166,7 @@ class TextFileReader:
 
     def save_string_to_file(self, file_path, input_string):
         current_datetime = datetime.datetime.now()
-        with open(file_path, 'a') as file:
+        with open(file_path, 'a', encoding='utf-8') as file:
             # file.write('\nDate and Time: {}\n'.format(current_datetime))
             try:
                 # Your code that might raise UnicodeEncodeError

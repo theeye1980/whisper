@@ -5,7 +5,7 @@ from classes.OpenAIClient import OpenAIClient
 from classes.TextFileReader import TextFileReader
 import os
 
-output_folder = "repair" #Папка, в которой лежат исходные расклеенные mp3 файлы
+output_folder = "11.27_1_Zal_Soveta_10.00(01.22)" #Папка, в которой лежат исходные расклеенные mp3 файлы
 parts_time=4800
 initial_time = 0
 log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
@@ -17,7 +17,7 @@ max_threads = 50
 thread_semaphore = threading.BoundedSemaphore(value=max_threads)
 
 def process_file(file_name, start_time, whisper, output_folder):
-    whisper.transcribe_audio(f"{output_folder}/{file_name}")
+    whisper.transcribe_audio(os.path.join(output_folder, file_name))
     whisper.segments_text(start_time, segments, output_folder)
 
 
@@ -37,7 +37,9 @@ i=0
 threads = []
 for file_name in file_list:
     part_name=i+1
-    out_file_name = f"{output_folder}/{output_folder}_part{part_name}.txt"
+    # out_file_name = f"{output_folder}/{output_folder}_part{part_name}.txt"
+
+    out_file_name = os.path.join(output_folder, f"{output_folder}_part{part_name}.txt")
     whisper = OpenAIClient(log_file, out_file_name)
     print(file_name)
     start_time=i*parts_time + initial_time

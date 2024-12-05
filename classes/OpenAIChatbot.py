@@ -43,7 +43,7 @@ class OpenAIChatbot:
         return response.text
 
     def write_to_file(self, promt, content):
-        with open('content.txt', 'a', encoding='utf-8') as file:
+        with open('content.txt', 'a',  encoding='utf-8') as file:
             file.write('Вопрос:\n' + promt + '\n' + 'Ответ:\n' + content + '_________' + '\n\n')
 
     def get_last_entries(self, count):
