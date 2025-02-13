@@ -4,7 +4,7 @@ import threading
 from classes.OpenAIClient import OpenAIClient
 from classes.TextFileReader import TextFileReader
 import os
-
+from config import output_folder,parts_time,initial_time,segments
 
 
 # Semaphore to limit the number of concurrent threads
@@ -28,11 +28,11 @@ projects = txt.scan_folders(".")
 
 for project in projects:
     output_folder = project  # Папка, в которой лежат исходные расклеенные mp3 файлы
-    parts_time = 600
-    initial_time = 0
+    # parts_time = 600
+    # initial_time = 0
     log_file = output_folder + ".txt"  # Имя файлика с результатом с переносами строк
     log_file_all = output_folder + "_2.txt"  # Имя файлика с результатами без переноса строк
-    segments = 12
+    # segments = 12
 
     #Считываем все расклеенные файлики
     #Перебираем каждый файлик от начала и до конца и отправляем каждый из них на транскрибацию и записываем результат

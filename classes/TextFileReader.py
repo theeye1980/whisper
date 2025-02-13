@@ -152,7 +152,7 @@ class TextFileReader:
                 uppercase_count = 0
 
                 file_path = os.path.join(output_folder, file_name)
-                with open(file_path, "r") as input_file:
+                with open(file_path, "r", encoding='utf-8') as input_file:
                     content = input_file.read()
 
                     dot_count, comma_count, uppercase_count = txt.count_characters(content)
@@ -164,7 +164,9 @@ class TextFileReader:
                 print(
                     f"Статистика по файлу {file_name}: Точек: {dot_count}, Запятых: {comma_count}, Заглавных букв: {uppercase_count}")
 
-    def save_string_to_file(self, file_path, input_string):
+
+    @staticmethod
+    def save_string_to_file(file_path, input_string):
         current_datetime = datetime.datetime.now()
         with open(file_path, 'a', encoding='utf-8') as file:
             # file.write('\nDate and Time: {}\n'.format(current_datetime))

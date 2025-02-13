@@ -1,6 +1,7 @@
 from openai import OpenAI
 import datetime
 from classes.bd import bdSQLite
+from classes.TextFileReader import TextFileReader
 
 class OpenAIClient:
     def __init__(self, log_file,log_file_all):
@@ -28,8 +29,8 @@ class OpenAIClient:
         all_text = '' # Задаем переменную для альтернативного текста
         db = bdSQLite()
         for segment in self.transcription_result.segments:
-            start = segment.start + start_time
-            # start = segment['start'] + start_time
+            # start = segment.start + start_time
+            start = segment['start'] + start_time
             st = start
             start = round(start)
 
@@ -40,8 +41,8 @@ class OpenAIClient:
             time_format = "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
             start_str = str(time_format)
 
-            text = segment.text
-            #text = segment['text']
+            # text = segment.text
+            text = segment['text']
             print('Start:', start_str, 'Text:', text)
 
             if segment_count > segments - 1:
@@ -70,7 +71,7 @@ class OpenAIClient:
             text = ''
 
             segment_count=segment_count+1
-        self.save_string_to_file(self.log_file_all, all_text)
+        TextFileReader.save_string_to_file(self.log_file_all, all_text)
 
     def check_string(self, input_string):
         # Trim leading and trailing spaces
@@ -82,14 +83,14 @@ class OpenAIClient:
         else:
             return False
 
-    def save_string_to_file(self, file_path, input_string):
-        current_datetime = datetime.datetime.now()
-        with open(file_path, 'a') as file:
-            # file.write('\nDate and Time: {}\n'.format(current_datetime))
-            try:
-                # Your code that might raise UnicodeEncodeError
-                file.write('\n' + input_string)
-            except UnicodeEncodeError as e:
-                # Handle the exception (e.g., print an error message)
-                print("UnicodeEncodeError occurred: {}".format(e))
-                # Additional error handling code can be added here
+    # def save_string_to_file(self, file_path, input_string):
+    #     current_datetime = datetime.datetime.now()
+    #     with open(file_path, 'a') as file:
+    #         # file.write('\nDate and Time: {}\n'.format(current_datetime))
+    #         try:
+    #             # Your code that might raise UnicodeEncodeError
+    #             file.write('\n' + input_string)
+    #         except UnicodeEncodeError as e:
+    #             # Handle the exception (e.g., print an error message)
+    #             print("UnicodeEncodeError occurred: {}".format(e))
+    #             # Additional error handling code can be added here
