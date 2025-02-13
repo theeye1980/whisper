@@ -4,13 +4,12 @@ import threading
 from classes.OpenAIClient import OpenAIClient
 from classes.TextFileReader import TextFileReader
 import os
+from config import output_folder,parts_time,initial_time,segments
 
-output_folder = "11.27_1_Zal_Soveta_10.00(01.22)" #Папка, в которой лежат исходные расклеенные mp3 файлы
-parts_time=4800
-initial_time = 0
+
 log_file = output_folder + ".txt" # Имя файлика с результатом с переносами строк
 log_file_all = output_folder + "_2.txt"    #Имя файлика с результатами без переноса строк
-segments = 12
+
 
 # Semaphore to limit the number of concurrent threads
 max_threads = 50
