@@ -64,7 +64,7 @@ class TextFileReader:
 
         folders = [folder for folder in os.listdir(path) if os.path.isdir(os.path.join(path, folder))]
         sorted_folders = sorted(folders)
-        filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "reports", "templates", ".git", ".idea", '__pycache__']]
+        filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "old_scripts", "reports", "templates", ".git", ".idea", '__pycache__']]
         return filtered_folders
     def copy_file(self, input, output):
         with open(input, 'r') as file:
@@ -92,7 +92,7 @@ class TextFileReader:
             for txtfile in txtfiles:
                 file_path = os.path.join(project, txtfile)
                 isProblem = False
-                with open(file_path, "r") as input_file:
+                with open(file_path, "r", encoding='utf-8') as input_file:
                     content = input_file.read()
                     dot_count, comma_count, uppercase_count = self.count_characters(content)
 
