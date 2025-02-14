@@ -144,7 +144,7 @@ class TextFileReader:
     @staticmethod
     def assemble(file_list, output_folder, log_file):
         txt = TextFileReader("")
-        with open(log_file, "w") as output_file:
+        with open(log_file, "w", encoding='utf-8') as output_file:
             for file_name in file_list:
                 # Initialize counters for dots, commas, and uppercase letters
                 dot_count = 0
