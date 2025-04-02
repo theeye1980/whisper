@@ -33,7 +33,7 @@ class YandexSpeechkitClient:
         self.transcription_result = self.model.transcribe_file(audio_file_path)
         return self.transcription_result
 
-    def segments_text(self,start_time, output_folder):
+    def segments_text(self,start_time, segments, output_folder):
 
         all_text = '' # Задаем переменную для альтернативного текста
         db = bdSQLite()
