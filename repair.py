@@ -2,7 +2,7 @@
 import os
 import threading
 from classes.OpenAIClient import OpenAIClient
-from classes.YandexSpeechkitClient import YandexSpeechkitClient
+# from classes.YandexSpeechkitClient import YandexSpeechkitClient
 from classes.TextFileReader import TextFileReader
 segments = 12
 parts_time = 600
@@ -35,8 +35,8 @@ for file in files_to_repair:
     print (file)
     log_file = f"{i}.txt"
     new_file_path = file.replace(".mp3", ".txt")
-    # whisper = OpenAIClient(log_file, new_file_path)
-    whisper = YandexSpeechkitClient(log_file, new_file_path)
+    whisper = OpenAIClient(log_file, new_file_path)
+    # whisper = YandexSpeechkitClient(log_file, new_file_path)
 
     #определим start_time
     part_num = txt.extract_part_number(new_file_path)

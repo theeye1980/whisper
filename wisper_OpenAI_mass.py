@@ -21,7 +21,7 @@ def process_file(file_name, start_time, whisper, output_folder):
         thread_semaphore.release()  # Ensure semaphore is released
 
 
-# Собираем информацию о проектах
+# Собираем информацию о проектахКруглый стол «Создание и функционирование Научно-образовательного центра имени Н.Я. Данилевского в 2025 году»
 
 txt = TextFileReader("")
 projects = txt.scan_folders(".")

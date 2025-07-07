@@ -18,7 +18,7 @@ print("Привет")
 def process_file(file_name, start_time, whisper, output_folder):
 
     whisper.transcribe_audio(os.path.join(output_folder, file_name))
-    whisper.segments_text(start_time,output_folder)
+    whisper.segments_text(start_time,segments, output_folder)
 
 # Now file_list contains the names of all files sorted by part number
 i=0
@@ -36,13 +36,14 @@ for file_name in file_list:
     thread_semaphore.acquire()
 
     # Create a thread for processing the file
-    t = threading.Thread(target=process_file, args=(file_name, start_time, whisper, output_folder))
-    threads.append(t)
-    t.start()
 
+    # t = threading.Thread(target=process_file, args=(file_name, start_time, whisper, output_folder))
+    # threads.append(t)
+    # t.start()
+    process_file(file_name, start_time, whisper, output_folder)
 # Wait for all threads to complete
-for t in threads:
-    t.join()
+# for t in threads:
+#     t.join()
 print("Уходите!")
 
 # Соберем все кусочки текстовых файлов в единый файл
