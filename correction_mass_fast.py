@@ -14,6 +14,7 @@ problem_files = []
 
 chatbot = OpenAIChatbot()
 # model = "gpt-3.5-turbo"
+# model = "gpt-4.1-nano-2025-04-14"
 model = "gpt-4o-mini"
 temperatura = 0.1
 helper = "Analyze the text below. Add commas and periods, as well as capitalize where appropriate. Do not change or add anything else:"

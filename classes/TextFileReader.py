@@ -12,7 +12,7 @@ class TextFileReader:
         with open(self.file_path, 'r', encoding='utf-8') as file:
             for line in file:
                 line = line.strip()
-                if len(temp_chunk) + len(line) <= 10000:
+                if len(temp_chunk) + len(line) <= 29000:
                     temp_chunk += line + '\r\n'
                 else:
                     self.text_chunks.append(temp_chunk)
@@ -64,8 +64,15 @@ class TextFileReader:
 
         folders = [folder for folder in os.listdir(path) if os.path.isdir(os.path.join(path, folder))]
         sorted_folders = sorted(folders)
-        filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "old_scripts", "reports", "templates", ".git", ".idea", '__pycache__']]
+        filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "old_scripts", "reports", "templates", ".git", ".idea", '__pycache__', ".venv",]]
         return filtered_folders
+    def delete_old_projects_files(self,path):
+        for filename in os.listdir(path):
+            if filename.endswith(".txt") and filename != "requirements.txt":
+                file_path = os.path.join(path, filename)
+                if os.path.isfile(file_path):
+                    print(f"Deleting file: {file_path}")
+                    os.remove(file_path)
     def copy_file(self, input, output):
         with open(input, 'r') as file:
             content = file.read()
@@ -168,7 +175,7 @@ class TextFileReader:
     @staticmethod
     def save_string_to_file(file_path, input_string):
         current_datetime = datetime.datetime.now()
-        with open(file_path, 'a', encoding='utf-8') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             # file.write('\nDate and Time: {}\n'.format(current_datetime))
             try:
                 # Your code that might raise UnicodeEncodeError
