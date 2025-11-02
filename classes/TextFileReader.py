@@ -66,9 +66,11 @@ class TextFileReader:
         sorted_folders = sorted(folders)
         filtered_folders = [folder for folder in sorted_folders if folder not in ["classes", "old_scripts", "reports", "templates", ".git", ".idea", '__pycache__', ".venv",]]
         return filtered_folders
-    def delete_old_projects_files(self,path):
+
+
+    def delete_old_projects_files(self, path):
         for filename in os.listdir(path):
-            if filename.endswith(".txt") and filename != "requirements.txt":
+            if filename.endswith(".txt") and filename not in ("requirements.txt", "input.txt"):
                 file_path = os.path.join(path, filename)
                 if os.path.isfile(file_path):
                     print(f"Deleting file: {file_path}")

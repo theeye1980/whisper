@@ -1,16 +1,16 @@
 # 1. Расклеиваем выходной файл на части размером не более 24 Мб, все части нумеруем и сохрянем во временной папке с именем, как имя файла
 # 2. Транскрибируем каждую часть и записываем все части в единый текстовый журнал для обработки.
-import threading
+
 from classes.Whisperlocal import Whisperlocal
 import whisper
 from classes.TextFileReader import TextFileReader
 import os
-from config import output_folder,parts_time,initial_time,segments
+import requests
+from config import output_folder,parts_time,initial_time,segments, url, chat_id
 
 
-# Semaphore to limit the number of concurrent threads
-max_threads = 50
-thread_semaphore = threading.BoundedSemaphore(value=max_threads)
+
+whisper = whisper.load_model("turbo")
 
 def process_file(file_name, start_time, whisper, output_folder):
     try:
@@ -18,8 +18,6 @@ def process_file(file_name, start_time, whisper, output_folder):
         whisper_net.segments_text(start_time, segments, result)
     except Exception as e:
         print(f"Error processing {file_name}: {e}")
-    finally:
-        thread_semaphore.release()  # Ensure semaphore is released
 
 
 # Собираем информацию о проектахКруглый стол «Создание и функционирование Научно-образовательного центра имени Н.Я. Данилевского в 2025 году»
@@ -42,7 +40,7 @@ for project in projects:
 
     # Now file_list contains the names of all files sorted by part number
     i=0
-    threads = []
+
     for file_name in file_list:
 
         part_name=i+1
@@ -50,26 +48,27 @@ for project in projects:
         out_file_name = os.path.join(output_folder, f"{output_folder}_part{part_name}.txt")
 
         whisper_net = Whisperlocal(log_file, out_file_name)
-        whisper = whisper.load_model("turbo")
+
 
         print(file_name)
         start_time=i*parts_time + initial_time
         i = i + 1
 
-        # Acquire semaphore before starting the thread
-        thread_semaphore.acquire()
+        process_file(file_name, start_time, whisper, output_folder)
 
-        # Create a thread for processing the file
-        t = threading.Thread(target=process_file, args=(file_name, start_time, whisper, output_folder))
-        threads.append(t)
-        t.start()
 
-    # Wait for all threads to complete
-    for t in threads:
-        t.join()
+
         
     print("Уходите!")
 
     # Соберем все кусочки текстовых файлов в единый файл
     file_list = txt.sort_files_in_folder(output_folder, ".txt")
     TextFileReader.assemble(file_list,output_folder,log_file)
+
+
+payload = {
+        'chat_id': chat_id,
+        'text': "Усё готово! проверяй"
+    }
+
+response = requests.post(url, data=payload)
