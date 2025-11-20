@@ -75,6 +75,15 @@ class TextFileReader:
                 if os.path.isfile(file_path):
                     print(f"Deleting file: {file_path}")
                     os.remove(file_path)
+
+    def list_projects_files(self, path):
+        result = []
+        for filename in os.listdir(path):
+            if filename.endswith(".txt") and filename not in ("requirements.txt", "input.txt"):
+
+                result.append(filename)
+        return result
+
     def copy_file(self, input, output):
         with open(input, 'r') as file:
             content = file.read()

@@ -10,11 +10,14 @@ from config import output_folder,parts_time,initial_time,segments, url, chat_id
 
 
 
-whisper = whisper.load_model("turbo")
+whisper_model = whisper.load_model("turbo")
 
-def process_file(file_name, start_time, whisper, output_folder):
+def process_file(file_name, start_time, whisper, output_folder, language='ru'):
     try:
-        result = whisper.transcribe(os.path.join(output_folder, file_name))
+        result = whisper_model.transcribe(
+            os.path.join(output_folder, file_name),
+            language=language  # Здесь указываем язык
+        )
         whisper_net.segments_text(start_time, segments, result)
     except Exception as e:
         print(f"Error processing {file_name}: {e}")

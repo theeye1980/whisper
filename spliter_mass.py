@@ -1,6 +1,8 @@
 from pydub import AudioSegment
 import os
+import requests
 import time
+from config import input_folder, url, chat_id
 
 def split_mp3(file_path, max_length, output_folder1):
     audio = AudioSegment.from_file(file_path, format="mp3")
@@ -22,7 +24,7 @@ def split_mp3(file_path, max_length, output_folder1):
 # Start timing
 start_time = time.time()
 # Указываем входную папку (полный путь)
-input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_28.10.2025"
+# input_folder = r"/home/vyacheslav/Загрузки/Стенограммы_28.10.2025"
 
 # Get audio files from the folder
 file_list = []
@@ -41,7 +43,12 @@ total_time = end_time - start_time
 print(f"Total time taken: {total_time:.2f} seconds")
 
 
+payload = {
+        'chat_id': chat_id,
+        'text': "Расклеили! проверяй"
+    }
 
+response = requests.post(url, data=payload)
 
 
 

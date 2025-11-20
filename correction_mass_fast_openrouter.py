@@ -1,10 +1,10 @@
 # запускает автоматический сбор и коррекцию всех проблемных файлов
-from classes.TextFileReader import TextFileReader
-# from classes.OpenAIChatbot import OpenAIChatbot
-from classes.OpenRouterClient import OpenRouterClient
-import json
 import os
 import threading
+
+# from classes.OpenAIChatbot import OpenAIChatbot
+from classes.OpenRouterClient import OpenRouterClient
+from classes.TextFileReader import TextFileReader
 
 # Собираем информацию о проблемных  айлах
 txt = TextFileReader("")
