@@ -11,6 +11,18 @@ def extract_date(line):
     return match.group(0) if match else ''
 
 
+def get_duration_minutes(filename):
+    # Ищем в имени файла часть в скобках, например (03.56)
+    match = re.search(r'\((\d{2})\.(\d{2})\)', filename)
+    if not match:
+        raise ValueError("Длительность в нужном формате не найдена в имени файла")
+
+    hours = int(match.group(1))
+    minutes = int(match.group(2))
+
+    total_minutes = hours * 60 + minutes
+    return total_minutes
+
 def process_text_file(input_file, output_file):
     with open(input_file, 'r', encoding='utf-8') as infile:
         lines = infile.readlines()
@@ -43,7 +55,7 @@ def process_text_file(input_file, output_file):
         csv_writer = csv.writer(csvfile, delimiter=';')
 
         # Write the header
-        csv_writer.writerow(['Fourth Line', 'Second Line', 'First Line', 'Date', 'Link'])
+        csv_writer.writerow(['Fourth Line', 'Second Line', 'First Line', 'Date', 'Duration','Link'])
 
         # Process each block and write to the CSV
         for block in blocks:
@@ -52,7 +64,8 @@ def process_text_file(input_file, output_file):
                 second_line = block[1]
                 first_line = block[0]
                 date = extract_date(block[2])
-                csv_writer.writerow([fourth_line, second_line, first_line, date, link])
+                duration = get_duration_minutes(block[1])
+                csv_writer.writerow([fourth_line, second_line, first_line, date, duration, link])
 
 
 # Example usage

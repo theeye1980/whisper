@@ -17,8 +17,8 @@ for file_path in file_paths:
     with open(file_path, 'rb') as f:
         # Имя файла на FTP будет таким же, как локальное имя
         filename = file_path.split('/')[-1]  # или os.path.basename(file_path)
-        print(f"Загружаем файл {filename} на FTP...")
-        print(f" путь https://podvi.ru/n8n/{filename}")
+        #print(f"Загружаем файл {filename} на FTP...")
+        print(f"https://podvi.ru/n8n/{filename}")
         ftp.storbinary(f'STOR {filename}', f)
 
 ftp.quit()

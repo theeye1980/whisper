@@ -23,21 +23,17 @@ def process_file(file_name, start_time, whisper, output_folder, language='ru'):
         print(f"Error processing {file_name}: {e}")
 
 
-# Собираем информацию о проектахКруглый стол «Создание и функционирование Научно-образовательного центра имени Н.Я. Данилевского в 2025 году»
-
 txt = TextFileReader("")
 projects = txt.scan_folders(".")
 
 for project in projects:
     output_folder = project  # Папка, в которой лежат исходные расклеенные mp3 файлы
     # parts_time = 600
-    # initial_time = 0
+    #initial_time = 27600
     log_file = output_folder + ".txt"  # Имя файлика с результатом с переносами строк
     log_file_all = output_folder + "_2.txt"  # Имя файлика с результатами без переноса строк
     # segments = 12
 
-    #Считываем все расклеенные файлики
-    #Перебираем каждый файлик от начала и до конца и отправляем каждый из них на транскрибацию и записываем результат
 
     file_list = txt.sort_files_in_folder(output_folder, ".mp3")
 
