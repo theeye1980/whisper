@@ -1,4 +1,5 @@
 venv/
+.venv/
 reports/
 __pycache__/
 .idea/
@@ -15,5 +16,6 @@ turn.db
 turn.db.sql
 config.json
 *config.py
+*.gguf
 
 

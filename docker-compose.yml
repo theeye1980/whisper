@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mail-checker:
+    build: .
+    container_name: mail-checker
+    restart: unless-stopped
+    user: "1000:1000"
+    env_file:
+      - .env
+    volumes:
+      - /home/vyacheslav/dwld:/app/downloads
+      - ./output.csv:/app/output.csv
+      - /home/vyacheslav/projects/whisper/input.txt:/app/input.txt
+    environment:
+      - TZ=Europe/Moscow
+      - DWLD_DIR=/app/downloads
