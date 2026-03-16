@@ -17,9 +17,9 @@ class Whisperlocal:
         all_text = '' # Задаем переменную для альтернативного текста
         db = bdSQLite()
         # for segment in transcription_result.segments:
-        for segment in transcription_result['segments']:
+        for segment in transcription_result:
             # start = segment.start + start_time
-            start = segment['start'] + start_time
+            start = segment.start + start_time
             st = start
             start = round(start)
 
@@ -31,7 +31,7 @@ class Whisperlocal:
             start_str = str(time_format)
 
             # text = segment.text
-            text = segment['text']
+            text = segment.text
             print('Start:', start_str, 'Text:', text)
 
             if segment_count > segments - 1:

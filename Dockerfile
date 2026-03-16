@@ -9,7 +9,7 @@ COPY rabbit_utils.py .
 COPY .env .
 
 
-RUN pip install --no-cache-dir requests pika 
+RUN pip install --no-cache-dir requests pika python-dotenv
 RUN apt-get update && apt-get install -y ffmpeg
 
 RUN chown -R 1000:1000 /app 
