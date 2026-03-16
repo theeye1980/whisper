@@ -2,12 +2,14 @@ import pika
 import ssl
 import os
 import json
+from dotenv import load_dotenv
 
+load_dotenv()  # Загружает .env из текущей директории
 
 def get_connection():
     credentials = pika.PlainCredentials(
         os.environ.get('RABBITMQ_USER', 'admin'),
-        os.environ.get('RABBITMQ_PASS', 'ZvGskd8w48tYuMBetpKL44Lzx+R4LgQ2tzW5Lj1ciWA=')
+        os.environ.get('RABBITMQ_PASS', '')
     )
     ssl_context = ssl.create_default_context()
     host = os.environ.get('RABBITMQ_HOST', 'rabbitmq.theyen8n.ru')
@@ -42,3 +44,17 @@ def send_job(job_dir: str, files: list):
     )
     print(f"Job sent: {job_dir}, files: {len(files)}")
     conn.close()
+
+def declare_queue(channel, queue_name):
+    channel.queue_declare(queue=queue_name, durable=True)
+
+
+def publish(channel, queue_name, message):
+    if isinstance(message, dict):
+        message = json.dumps(message)
+    channel.basic_publish(
+        exchange='',
+        routing_key=queue_name,
+        body=message,
+        properties=pika.BasicProperties(delivery_mode=2)
+    )

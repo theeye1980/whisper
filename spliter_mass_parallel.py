@@ -1,15 +1,19 @@
+import argparse
 from pydub import AudioSegment
 import os
+import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
-from config import input_folder,parts_time
+
+sys.path.insert(0, '/home/vyacheslav/projects/whisper')
+from config import input_folder as config_input_folder, parts_time
 
 def split_mp3(file_path, max_length, output_folder1):
     audio = AudioSegment.from_file(file_path, format="mp3")
     file_name = os.path.basename(file_path)
 
     if not os.path.exists(output_folder1):
-        os.mkdir(output_folder1)
+        os.makedirs(output_folder1)
 
     num_parts = len(audio) // (max_length * 1000) + 1
 
@@ -19,27 +23,27 @@ def split_mp3(file_path, max_length, output_folder1):
         part = audio[start_time:end_time]
         part.export(os.path.join(output_folder1, f"{os.path.splitext(file_name)[0]}_part{i + 1}.mp3"), format="mp3")
 
-def process_file(file_named, input_folder):
+def process_file(file_named, folder):
     if file_named.endswith(".mp3"):
-        audio_file_path = os.path.join(input_folder, file_named)
-        output_folder = file_named[:-4]  # Create output folder in the same directory
-        # parts_time = 600  # Length of each part in seconds
+        audio_file_path = os.path.join(folder, file_named)
+        output_folder = os.path.join(folder, file_named[:-4])
         split_mp3(audio_file_path, parts_time, output_folder)
 
 if __name__ == "__main__":
-    # Start timing
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input_folder', type=str, default=None)
+    args = parser.parse_args()
+
+    folder = args.input_folder if args.input_folder else config_input_folder
+    
+    print(f"Взята в обработку папка: {folder}")
+
     start_time = time.time()
-    # Specify the input folder (full path)
+    file_list = [f for f in os.listdir(folder) if f.endswith(".mp3")]
+    
+    print(f"Найдено файлов: {len(file_list)}")
 
-    # Get audio files from the folder
-    file_list = [file_named for file_named in os.listdir(input_folder) if file_named.endswith(".mp3")]
-
-    # Use ProcessPoolExecutor to parallelize the processing
     with ProcessPoolExecutor(max_workers=16) as executor:
-        executor.map(process_file, file_list, [input_folder] * len(file_list))
+        executor.map(process_file, file_list, [folder] * len(file_list))
 
-    # End timing
-    end_time = time.time()
-    # Calculate and print the total time taken
-    total_time = end_time - start_time
-    print(f"Total time taken: {total_time:.2f} seconds")
+    print(f"Total time taken: {time.time() - start_time:.2f} seconds")
