@@ -52,7 +52,7 @@ def send_to_stage_split(job_dir: str, files: list):
 
 if __name__ == "__main__":
     # Тестовые данные на основе твоей структуры
-    job_dir = "/home/vyacheslav/dwld/03.12_3_zom1_12.30_(02.23)"
-    files = ["03.05_2_zs_11.00_(00.51).mp3"]
+    job_dir = "/home/vyacheslav/Загрузки/Стенограммы_12.02.2026"
+    files = ["02.13_3_zom1_14.00_(01.20).mp3"]
 
     send_to_stage_split(job_dir, files)

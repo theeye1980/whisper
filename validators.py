@@ -13,17 +13,12 @@ def validate_split(job_dir, files):
     return True, "OK"
 
 def validate_whisper(job_dir, files):
-    for f in files:
-        name = Path(f).stem
-        chunk_dir = os.path.join(job_dir, f"temp_{name}")
-        if not os.path.isdir(chunk_dir):
-            return False, f"Нет папки {chunk_dir}"
-        mp3s = [x for x in os.listdir(chunk_dir) if x.endswith('.mp3')]
-        for mp3 in mp3s:
-            txt = mp3.replace('.mp3', '.txt')
-            if not os.path.exists(os.path.join(chunk_dir, txt)):
-                return False, f"Нет {txt}"
-    return True, "OK"
+    """Проверяет, что создан итоговый txt файл"""
+    import os
+    log_file = job_dir + ".txt"
+    if os.path.exists(log_file) and os.path.getsize(log_file) > 0:
+        return True, "OK"
+    return False, f"Файл {log_file} не создан или пуст"
 
 def validate_correct(job_dir, files):
     for f in files:

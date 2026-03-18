@@ -44,6 +44,21 @@ def send_job(job_dir: str, files: list):
     )
     print(f"Job sent: {job_dir}, files: {len(files)}")
     conn.close()
+    
+def send_to_whisper(job_dir: str):
+    conn = get_connection()
+    ch = conn.channel()
+    ch.queue_declare(queue='stage_whisper', durable=True)
+    
+    message = json.dumps({'job_dir': job_dir})
+    ch.basic_publish(
+        exchange='',
+        routing_key='stage_whisper',
+        body=message,
+        properties=pika.BasicProperties(delivery_mode=2)
+    )
+    print(f"Sent to stage_whisper: {job_dir}")
+    conn.close()
 
 def declare_queue(channel, queue_name):
     channel.queue_declare(queue=queue_name, durable=True)

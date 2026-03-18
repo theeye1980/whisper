@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Последовательно обрабатывает: split из очереди"""
+"""Последовательно обрабатывает: split и whisper из очередей"""
 import sys
 import json
 import subprocess
@@ -12,13 +12,11 @@ from config import QUEUES, WORK_DIR
 
 LOCK_FILE = "/tmp/gpu_worker.lock"
 
-# Маппинг путей Docker -> Host
 PATH_MAP = {
     "/app/downloads": "/home/vyacheslav/dwld"
 }
 
 def docker_to_host_path(path):
-    """Преобразует путь из Docker в путь на хосте"""
     for docker_path, host_path in PATH_MAP.items():
         if path.startswith(docker_path):
             return path.replace(docker_path, host_path, 1)
@@ -37,8 +35,8 @@ def process_queue(queue_in, queue_out, scripts, validator):
     job = json.loads(body)
 
     job_dir_docker = job["job_dir"]
-    job_dir = docker_to_host_path(job_dir_docker)  # <-- преобразование
-    files = job["files"]
+    job_dir = docker_to_host_path(job_dir_docker)
+    files = job.get("files", [])
     
     print(f"[{queue_in}] {job_dir} начат")
     
@@ -70,6 +68,12 @@ def process_queue(queue_in, queue_out, scripts, validator):
 def run():
     with filelock.FileLock(LOCK_FILE):
         while True:
+            # Сначала пробуем whisper (приоритет GPU-задачам)
+            if process_queue(QUEUES["whisper"], QUEUES.get("correct"),
+               ["wisper_local_one.py"], validate_whisper):
+                continue
+            
+            # Потом split
             if process_queue(QUEUES["input"], None,
                ["clear_all.py", "spliter_mass_parallel.py"], validate_split):
                 continue
