@@ -1,7 +1,9 @@
 import csv
 import re
 import os
+import requests
 from datetime import datetime
+from config import GOOGLE_DOCS_SHEET, GOOGLE_SHEET_WEBAPP_URL
 
 
 def extract_date(line):
@@ -16,6 +18,13 @@ def get_duration_minutes(filename):
     hours = int(match.group(1))
     minutes = int(match.group(2))
     return hours * 60 + minutes
+
+
+def append_to_google_sheet(row):
+    try:
+        requests.post(GOOGLE_SHEET_WEBAPP_URL, json={"row": row}, timeout=10)
+    except Exception as e:
+        print(f"Ошибка отправки в Google Sheet: {e}")
 
 
 def process_text_file(input_file, output_file):
@@ -51,7 +60,6 @@ def process_text_file(input_file, output_file):
                 i += 1
 
     today_date = datetime.now().strftime('%d.%m.%Y')
-
     write_header = not os.path.exists(output_file) or os.path.getsize(output_file) == 0
 
     with open(output_file, 'a', newline='', encoding='utf-8') as csvfile:
@@ -70,8 +78,11 @@ def process_text_file(input_file, output_file):
                 try:
                     duration = get_duration_minutes(block[1])
                 except ValueError:
-                    duration = 0  # или пропустить запись
-                csv_writer.writerow([today_date, fourth_line, second_line, first_line, date, duration, price, link])
+                    duration = 0
+
+                row = [today_date, fourth_line, second_line, first_line, date, duration, price, link]
+                csv_writer.writerow(row)
+                append_to_google_sheet(row)
 
 
 input_file = 'input.txt'

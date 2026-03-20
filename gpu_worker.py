@@ -10,6 +10,7 @@ from rabbit_utils import get_connection, publish
 from validators import validate_split, validate_whisper, validate_correct, validate_finalize
 from config import QUEUES, WORK_DIR
 
+
 LOCK_FILE = "/tmp/gpu_worker.lock"
 
 PATH_MAP = {
@@ -29,6 +30,7 @@ def process_queue(queue_in, queue_out, scripts, validator):
     
     method, props, body = ch.basic_get(queue=queue_in, auto_ack=False)
     if not method:
+        print(f"[{queue_in}] пусто")  # <-- добавь
         conn.close()
         return False
     
@@ -66,8 +68,11 @@ def process_queue(queue_in, queue_out, scripts, validator):
         return False
 
 def run():
+    print("Запуск воркера...")
     with filelock.FileLock(LOCK_FILE):
         while True:
+            print(QUEUES["input"])
+            print(QUEUES["whisper"])
             # Сначала пробуем whisper (приоритет GPU-задачам)
             if process_queue(QUEUES["whisper"], QUEUES.get("correct"),
                ["wisper_local_one.py"], validate_whisper):

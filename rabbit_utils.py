@@ -44,7 +44,7 @@ def send_job(job_dir: str, files: list):
     )
     print(f"Job sent: {job_dir}, files: {len(files)}")
     conn.close()
-    
+
 def send_to_whisper(job_dir: str):
     conn = get_connection()
     ch = conn.channel()
