@@ -3,7 +3,8 @@ import re
 import os
 import requests
 from datetime import datetime
-from config import GOOGLE_DOCS_SHEET, GOOGLE_SHEET_WEBAPP_URL
+from config import GOOGLE_DOCS_SHEET, GOOGLE_SHEET_WEBAPP_URL, SMTP_HOST, SMTP_PORT, EMAIL_ADDRESS, APP_PASSWORD
+from classes.EmailNotifier import EmailNotifier
 
 
 def extract_date(line):
@@ -22,9 +23,12 @@ def get_duration_minutes(filename):
 
 def append_to_google_sheet(row):
     try:
-        requests.post(GOOGLE_SHEET_WEBAPP_URL, json={"row": row}, timeout=10)
+        resp = requests.post(GOOGLE_SHEET_WEBAPP_URL, json={"row": row}, timeout=10)
+        resp.raise_for_status()
+        return True
     except Exception as e:
         print(f"Ошибка отправки в Google Sheet: {e}")
+        return False
 
 
 def process_text_file(input_file, output_file):
@@ -61,6 +65,8 @@ def process_text_file(input_file, output_file):
 
     today_date = datetime.now().strftime('%d.%m.%Y')
     write_header = not os.path.exists(output_file) or os.path.getsize(output_file) == 0
+    rows_total = 0
+    rows_sent_to_sheet = 0
 
     with open(output_file, 'a', newline='', encoding='utf-8') as csvfile:
         csv_writer = csv.writer(csvfile, delimiter=';')
@@ -82,7 +88,37 @@ def process_text_file(input_file, output_file):
 
                 row = [today_date, fourth_line, second_line, first_line, date, duration, price, link]
                 csv_writer.writerow(row)
-                append_to_google_sheet(row)
+                rows_total += 1
+                if append_to_google_sheet(row):
+                    rows_sent_to_sheet += 1
+
+    # Уведомление на почту себе
+    notifier = EmailNotifier(
+        smtp_host=SMTP_HOST,
+        smtp_port=SMTP_PORT,
+        email_address=EMAIL_ADDRESS,
+        app_password=APP_PASSWORD,
+        default_to=[EMAIL_ADDRESS]
+    )
+
+    subject = "Задание зарегистрировано"
+    text_body = (
+        f"Задание обработано.\n"
+        f"Добавлено строк в CSV: {rows_total}\n"
+        f"Отправлено в Google Sheets: {rows_sent_to_sheet}\n"
+        f"Таблица: {GOOGLE_DOCS_SHEET}"
+    )
+    html_body = f"""
+    <html>
+      <body>
+        <p>Задание обработано.</p>
+        <p>Добавлено строк в CSV: <b>{rows_total}</b><br>
+           Отправлено в Google Sheets: <b>{rows_sent_to_sheet}</b></p>
+        <p>Посмотреть: <a href="{GOOGLE_DOCS_SHEET}">{GOOGLE_DOCS_SHEET}</a></p>
+      </body>
+    </html>
+    """
+    notifier.send(subject=subject, text_body=text_body, html_body=html_body, to="kattyrinoa@mail.ru")
 
 
 input_file = 'input.txt'
