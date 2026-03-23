@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import torch
+import requests
 import time
 from ftplib import FTP
 
@@ -14,7 +15,8 @@ from classes.EmailNotifier import EmailNotifier
 from config import (
     input_folder, parts_time, initial_time, segments,
     ftp_path, ftp_host, ftp_user_name, ftp_password,
-    SMTP_HOST, SMTP_PORT, EMAIL_ADDRESS, APP_PASSWORD
+    SMTP_HOST, SMTP_PORT, EMAIL_ADDRESS, APP_PASSWORD,
+    GOOGLE_DOCS_SHEET, GOOGLE_SHEET_WEBAPP_URL
 )
 
 parser = argparse.ArgumentParser(description='Обработка аудио файлов')
@@ -92,11 +94,22 @@ def main(folder):
         smtp_port=SMTP_PORT,
         email_address=EMAIL_ADDRESS,
         app_password=APP_PASSWORD,
-        default_to=[EMAIL_ADDRESS]  # уведомления себе
-        cc="kattyrinoa@mail.ru"
+        default_to=[EMAIL_ADDRESS],  # уведомления себе
+        #to=["kattyrinoa@mail.ru","v.kosarev@list.ru"]
     )
-    notifier.send_link_notification(filename)
-
+    notifier.send_link_notification(filename,to=["kattyrinoa@mail.ru","v.kosarev@list.ru"])
+    
+    filename_without_ext = filename[:-4]
+    
+    requests.post(
+    GOOGLE_SHEET_WEBAPP_URL,
+    json={
+        "action": "setLinkByFilename",
+        "filename": filename_without_ext,
+        "link": f"https://podvi.ru/n8n/{filename}"
+    },
+    timeout=20
+)
 
 if __name__ == "__main__":
     folder = args.input_folder if args.input_folder else input_folder

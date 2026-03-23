@@ -14,8 +14,12 @@ class EmailNotifier:
         self.default_cc = default_cc or []
 
     def send(self, subject, text_body, html_body=None, to=None, cc=None):
-        to = to or self.default_to
-        cc = cc or self.default_cc
+        to = to or self.default_to or []
+        cc = cc or []
+        if isinstance(to, str):
+            to = [to]
+        if isinstance(cc, str):
+            cc = [cc]
 
         msg = MIMEMultipart('alternative')
         msg['Subject'] = Header(subject, 'utf-8')

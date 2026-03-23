@@ -118,7 +118,7 @@ def process_text_file(input_file, output_file):
       </body>
     </html>
     """
-    notifier.send(subject=subject, text_body=text_body, html_body=html_body, to="kattyrinoa@mail.ru")
+    notifier.send(subject=subject, text_body=text_body, html_body=html_body,  to=["kattyrinoa@mail.ru","v.kosarev@list.ru"])
 
 
 input_file = 'input.txt'

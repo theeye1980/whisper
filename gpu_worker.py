@@ -84,7 +84,7 @@ def run():
                 continue
             
             import time
-            time.sleep(5)
+            time.sleep(200)
 
 if __name__ == "__main__":
     run()

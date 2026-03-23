@@ -7,6 +7,7 @@ COPY __entry1.py .
 COPY config.py . 
 COPY rabbit_utils.py .
 COPY .env .
+COPY classes ./classes
 
 
 RUN pip install --no-cache-dir requests pika python-dotenv
